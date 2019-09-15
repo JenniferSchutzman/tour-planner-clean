@@ -84,7 +84,6 @@ export const stateTracker = (state = initialState, action) => {
 			return merge(state, { interests: newState });
 
 		case SELECTED_HAUNTED:
-			// const wiretap = x => console.log(x);
 			const newExpHaun = compose(
 				map(
 					exp =>
@@ -96,7 +95,7 @@ export const stateTracker = (state = initialState, action) => {
 				find(x => x.name === 'haunted'),
 				map(i => merge(i, { name: toLower(i.name) }))
 			)(state.interests);
-			//console.log('newExp', newExp)
+
 			const finalInterestsWithNewExpHaun = map(
 				i =>
 					i.name === 'History' || 'Culinary' || 'Adventure' || 'Haunted'
@@ -105,6 +104,7 @@ export const stateTracker = (state = initialState, action) => {
 				state.interests
 			);
 			return merge(state, { interests: finalInterestsWithNewExpHaun });
+
 		case SELECTED_ADVENTURE:
 			const newExpAdv = compose(
 				map(
@@ -127,8 +127,6 @@ export const stateTracker = (state = initialState, action) => {
 			);
 			return merge(state, { interests: finalInterestsWithNewExpAdv });
 		case SELECTED_CULINARY:
-			//console.log('state.interests before the compose', action.payload)
-			//console.log('exp.name before compose', JSON.stringify(state.interests))
 			const newExpCul = compose(
 				map(
 					exp =>
@@ -140,7 +138,6 @@ export const stateTracker = (state = initialState, action) => {
 				find(x => x.name === 'culinary'),
 				map(i => merge(i, { name: toLower(i.name) }))
 			)(state.interests);
-			//console.log('newExpCul after compose', newExpCul)
 			const finalInterestsWithNewExpCul = map(
 				i =>
 					i.name === 'History' || 'Culinary' || 'Adventure' || 'Haunted'
@@ -148,9 +145,7 @@ export const stateTracker = (state = initialState, action) => {
 						: i,
 				state.interests
 			);
-			console.log('finalInterestsWithNewExpCul', finalInterestsWithNewExpCul);
 			return merge(state, { interests: finalInterestsWithNewExpCul });
-			console.log('state after all reducer function with cul', state);
 		case SELECTED_HISTORY:
 			const newExp = compose(
 				map(
@@ -182,15 +177,8 @@ export const stateTracker = (state = initialState, action) => {
 			return merge(state, { dow: newDow });
 		case MAKE_RESULTS_ARRAY:
 			var resultOptions = [];
-
-			console.log(
-				'action.payload.interests',
-				JSON.stringify(action.payload.interests)
-			);
 			const chosenInterest = find(i => i.selected, action.payload.interests);
-			//console.log('chosenInterests', JSON.stringify(chosenInterest))
 			const resultOptions1 = concat([chosenInterest.name], resultOptions);
-			//console.log('resultOptions1', JSON.stringify(resultOptions1))
 			const chosenExp = find(e => e.selected, chosenInterest.experienceTypes);
 			const resultOptions2 = concat([chosenExp.name], resultOptions1);
 			const chosenDays = find(d => d.selected, action.payload.dow);
