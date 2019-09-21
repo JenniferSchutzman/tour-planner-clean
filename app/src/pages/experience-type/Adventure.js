@@ -6,16 +6,27 @@ import ImageGrid from '../../components/ImageGrid';
 import ImageButtons from '../../components/ImageButtons';
 
 const Adventure = props => {
-	const { onClick, history, handleClick } = props;
+	const {
+		onClick,
+		history,
+		useValueForNextScreen,
+		imageName,
+		getImageName
+	} = props;
+	// console.log('props on Adventure', props);
 	const data = compose(
 		prop('experienceTypes'),
 		find(x => x.name === 'Adventure')
 	)(props.insideInterests);
-	console.log('data', data);
+	// console.log('data', data);
+
 	return (
 		<div>
 			<ImageGrid data={data} />
-			<ImageButtons data={data} handleClick={onClick(history)} />
+			<ImageButtons
+				data={data}
+				getImageName={useValueForNextScreen(history, imageName)}
+			/>
 			))}
 		</div>
 	);
@@ -29,7 +40,8 @@ function mapStateToProps(state) {
 
 function mapActionsToProps(dispatch) {
 	return {
-		onClick: (history, value) => () => {
+		useValueForNextScreen: (history, value) => () => {
+			console.log('hit onclick', value);
 			dispatch({ type: SELECTED_ADVENTURE, payload: value });
 			console.log('hit onclick', value);
 			history.push(`/schedule`);
