@@ -7,6 +7,8 @@ import { prop, find, compose } from 'ramda';
 import ButtonBase from 'material-ui/ButtonBase';
 import Typography from 'material-ui/Typography';
 
+// need to capture the value of image.name from the onclick and pass it into the adventure value of the onclick
+
 const styles = theme => ({
 	root: {
 		display: 'flex',
@@ -80,44 +82,63 @@ const styles = theme => ({
 	}
 });
 
-const ImageButtons = props => {
-	const { classes, data } = props;
-	const width = '70%';
-	const handleClick = image => image;
-	console.log(image.name);
+class ImageButtons extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			imageName: ''
+		};
+		const getImageName = function(name) {
+			this.state.imageName = name && console.log(this.state.imageName);
+		};
+		// this.getImageName = function(value) {
+		// 	(this.state.imageName = value) &&
+		// 		console.log('this.state.name', this.state.imageName);
+		// };
+	}
 
-	return (
-		<div>
-			{props.data.map(image => (
-				<ButtonBase
-					focusRipple
-					key={image.name}
-					onClick={handeClick(image.name)}
-					className={classes.image}
-					style={{
-						width: width
-					}}>
-					<span
-						className={classes.imageSrc}
-						style={{
-							backgroundImage: `url(${image.img})`
+	render() {
+		const { classes, data, getImageName } = this.props;
+		const width = '70%';
+		// const getImageName = value =>
+		// 	(this.state.imageName = value) &&
+		// 	console.log('this.state.name', this.state.imageName);
+		return (
+			<div>
+				{this.props.data.map(image => (
+					<ButtonBase
+						focusRipple
+						key={image.name}
+						value={image.name}
+						onClick={() => {
+							getImageName(image.name);
 						}}
-					/>
-					<span className={classes.imageBackdrop} />
-					<span className={classes.imageButton}>
-						<Typography
-							component="span"
-							variant="subheading"
-							color="inherit"
-							className={classes.imageTitle}>
-							{image.name}
-							<span className={classes.imageMarked} />
-						</Typography>
-					</span>
-				</ButtonBase>
-			))}
-		</div>
-	);
-};
+						className={classes.image}
+						style={{
+							width: width
+						}}>
+						<span
+							className={classes.imageSrc}
+							style={{
+								backgroundImage: `url(${image.img})`
+							}}
+						/>
+						<span className={classes.imageBackdrop} />
+						<span className={classes.imageButton}>
+							<Typography
+								component="span"
+								variant="subheading"
+								color="inherit"
+								className={classes.imageTitle}>
+								{image.name}
+								<span className={classes.imageMarked} />
+							</Typography>
+						</span>
+					</ButtonBase>
+				))}
+			</div>
+		);
+	}
+}
 
 export default withStyles(styles)(ImageButtons);
