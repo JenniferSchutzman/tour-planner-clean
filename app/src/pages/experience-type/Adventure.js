@@ -5,32 +5,40 @@ import { SELECTED_ADVENTURE } from '../../constants';
 import ImageGrid from '../../components/ImageGrid';
 import ImageButtons from '../../components/ImageButtons';
 
-const Adventure = props => {
-	const {
-		onClick,
-		history,
-		useValueForNextScreen,
-		imageName,
-		getImageName
-	} = props;
-	// console.log('props on Adventure', props);
-	const data = compose(
-		prop('experienceTypes'),
-		find(x => x.name === 'Adventure')
-	)(props.insideInterests);
-	// console.log('data', data);
+class Adventure extends React.Component {
+	// constructor(props) {
+	// 	super(props);
+	// 	this.state = { value: '' };
+	// 	this.handleClick = this.handleClick.bind(this);
+	// }
+	//
+	// handleClick(imageName) {
+	// 	this.setState({ value: imageName });
+	// 	console.log(this.state.value);
+	// }
+	render() {
+		const { history, useValueForNextScreen } = this.props;
 
-	return (
-		<div>
-			<ImageGrid data={data} />
-			<ImageButtons
-				data={data}
-				getImageName={useValueForNextScreen(history, imageName)}
-			/>
-			))}
-		</div>
-	);
-};
+		const data = compose(
+			prop('experienceTypes'),
+			find(x => x.name === 'Adventure')
+		)(this.props.insideInterests);
+
+		// const imageName = props.imageName;
+		// const print = () => console.log('imageName');
+
+		return (
+			<div>
+				<ImageGrid data={data} />
+				<ImageButtons
+					data={data}
+					onClick={e => useValueForNextScreen(history, e.currentTarget.value)}
+				/>
+				))
+			</div>
+		);
+	}
+}
 
 function mapStateToProps(state) {
 	return {
@@ -40,7 +48,7 @@ function mapStateToProps(state) {
 
 function mapActionsToProps(dispatch) {
 	return {
-		useValueForNextScreen: (history, value) => () => {
+		useValueForNextScreen: (history, value) => {
 			console.log('hit onclick', value);
 			dispatch({ type: SELECTED_ADVENTURE, payload: value });
 			console.log('hit onclick', value);
@@ -48,6 +56,7 @@ function mapActionsToProps(dispatch) {
 		}
 	};
 }
+
 const connector = connect(mapStateToProps, mapActionsToProps);
 
 export default connector(Adventure);

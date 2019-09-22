@@ -83,36 +83,18 @@ const styles = theme => ({
 });
 
 class ImageButtons extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			imageName: ''
-		};
-		const getImageName = function(name) {
-			this.state.imageName = name && console.log(this.state.imageName);
-		};
-		// this.getImageName = function(value) {
-		// 	(this.state.imageName = value) &&
-		// 		console.log('this.state.name', this.state.imageName);
-		// };
-	}
-
 	render() {
-		const { classes, data, getImageName } = this.props;
+		const { classes, data, onClick } = this.props;
 		const width = '70%';
-		// const getImageName = value =>
-		// 	(this.state.imageName = value) &&
-		// 	console.log('this.state.name', this.state.imageName);
+		//console.log('data', data);
 		return (
 			<div>
-				{this.props.data.map(image => (
+				{data.map(image => (
 					<ButtonBase
 						focusRipple
 						key={image.name}
 						value={image.name}
-						onClick={() => {
-							getImageName(image.name);
-						}}
+						onClick={onClick}
 						className={classes.image}
 						style={{
 							width: width
