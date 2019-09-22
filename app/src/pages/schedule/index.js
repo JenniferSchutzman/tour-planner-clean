@@ -34,7 +34,8 @@ const styles = theme => ({
 const Schedule = props => {
 	const { classes, history, onClick } = props;
 	const data = props.days;
-	//console.log('state with trues before clear', JSON.stringify(props.state))
+
+	//	console.log('state with trues before clear', JSON.stringify(props.state));
 	return (
 		<div>
 			<Card className={classes.card}>
@@ -86,7 +87,7 @@ const Schedule = props => {
 	);
 };
 function mapStateToProps(state) {
-	//console.log('state', state)
+	console.log('state', state);
 	return {
 		days: state.stateTracker.dow,
 		exp: state.stateTracker.interests,

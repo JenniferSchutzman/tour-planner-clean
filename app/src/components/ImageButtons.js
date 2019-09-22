@@ -82,45 +82,43 @@ const styles = theme => ({
 	}
 });
 
-class ImageButtons extends React.Component {
-	render() {
-		const { classes, data, onClick } = this.props;
-		const width = '70%';
-		//console.log('data', data);
-		return (
-			<div>
-				{data.map(image => (
-					<ButtonBase
-						focusRipple
-						key={image.name}
-						value={image.name}
-						onClick={onClick}
-						className={classes.image}
+const ImageButtons = props => {
+	const { classes, data, onClick } = props;
+	const width = '70%';
+	//console.log('data', data);
+	return (
+		<div>
+			{data.map(image => (
+				<ButtonBase
+					focusRipple
+					key={image.name}
+					value={image.name}
+					onClick={onClick}
+					className={classes.image}
+					style={{
+						width: width
+					}}>
+					<span
+						className={classes.imageSrc}
 						style={{
-							width: width
-						}}>
-						<span
-							className={classes.imageSrc}
-							style={{
-								backgroundImage: `url(${image.img})`
-							}}
-						/>
-						<span className={classes.imageBackdrop} />
-						<span className={classes.imageButton}>
-							<Typography
-								component="span"
-								variant="subheading"
-								color="inherit"
-								className={classes.imageTitle}>
-								{image.name}
-								<span className={classes.imageMarked} />
-							</Typography>
-						</span>
-					</ButtonBase>
-				))}
-			</div>
-		);
-	}
-}
+							backgroundImage: `url(${image.img})`
+						}}
+					/>
+					<span className={classes.imageBackdrop} />
+					<span className={classes.imageButton}>
+						<Typography
+							component="span"
+							variant="subheading"
+							color="inherit"
+							className={classes.imageTitle}>
+							{image.name}
+							<span className={classes.imageMarked} />
+						</Typography>
+					</span>
+				</ButtonBase>
+			))}
+		</div>
+	);
+};
 
 export default withStyles(styles)(ImageButtons);

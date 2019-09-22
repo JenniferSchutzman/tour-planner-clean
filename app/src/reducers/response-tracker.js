@@ -6,7 +6,8 @@ import {
 	SELECTED_CULINARY,
 	SELECTED_ADVENTURE,
 	MAKE_RESULTS_ARRAY,
-	START_OVER
+	START_OVER,
+	SELECTED_EXPERIENCE
 } from '../constants';
 import {
 	map,
@@ -76,14 +77,29 @@ const initialState = {
 
 export const stateTracker = (state = initialState, action) => {
 	switch (action.type) {
-		case SELECTED_INTEREST:
+		case SELECTED_EXPERIENCE:
+			console.log('action');
+
+			// mark the selected EXPERIENCE to {selected:true}
 			const newState = map(
-				i => (i.name === action.payload ? merge(i, { selected: true }) : i),
+				exp =>
+					exp.name === action.payload ? merge(exp, { selected: true }) : exp,
 				state.interests
 			);
-			return merge(state, { interests: newState });
+			console.log('newState', newState);
+			return merge(state, { experienceTypes: newState });
+
+		// mark the selected INTEREST to {selected:true}
+		// const newState = map(
+		// 	i => (i.name === action.payload ? merge(i, { selected: true }) : i),
+		// 	state.interests
+		// );
+		// console.log('experiences reducer', newState);
+		//
+		// return merge(state, { interests: newState });
 
 		case SELECTED_HAUNTED:
+			// console.log('haunted reducer', action);
 			const newExpHaun = compose(
 				map(
 					exp =>
@@ -96,16 +112,18 @@ export const stateTracker = (state = initialState, action) => {
 				map(i => merge(i, { name: toLower(i.name) }))
 			)(state.interests);
 
-			const finalInterestsWithNewExpHaun = map(
-				i =>
-					i.name === 'History' || 'Culinary' || 'Adventure' || 'Haunted'
-						? merge(i, { experienceTypes: newExpHaun })
-						: i,
-				state.interests
-			);
-			return merge(state, { interests: finalInterestsWithNewExpHaun });
+			return merge(state, { interests: newExpHaun });
+		// const finalInterestsWithNewExpHaun = map(
+		// 	i =>
+		// 		i.name === 'History' || 'Culinary' || 'Adventure' || 'Haunted'
+		// 			? merge(i, { experienceTypes: newExpHaun })
+		// 			: i,
+		// 	state.interests
+		// );
+		// return merge(state, { interests: finalInterestsWithNewExpHaun });
 
 		case SELECTED_ADVENTURE:
+			// console.log('selected_adventure reducer', action);
 			const newExpAdv = compose(
 				map(
 					exp =>
@@ -117,15 +135,15 @@ export const stateTracker = (state = initialState, action) => {
 				find(x => x.name === 'adventure'),
 				map(i => merge(i, { name: toLower(i.name) }))
 			)(state.interests);
-
-			const finalInterestsWithNewExpAdv = map(
-				i =>
-					i.name === 'History' || 'Culinary' || 'Adventure' || 'Haunted'
-						? merge(i, { experienceTypes: newExpAdv })
-						: i,
-				state.interests
-			);
-			return merge(state, { interests: finalInterestsWithNewExpAdv });
+			return merge(state, { interests: newExpAdv });
+		// const finalInterestsWithNewExpAdv = map(
+		// 	i =>
+		// 		i.name === 'History' || 'Culinary' || 'Adventure' || 'Haunted'
+		// 			? merge(i, { experienceTypes: newExpAdv })
+		// 			: i,
+		// 	state.interests
+		// );
+		// return merge(state, { interests: finalInterestsWithNewExpAdv });
 		case SELECTED_CULINARY:
 			const newExpCul = compose(
 				map(
@@ -138,16 +156,18 @@ export const stateTracker = (state = initialState, action) => {
 				find(x => x.name === 'culinary'),
 				map(i => merge(i, { name: toLower(i.name) }))
 			)(state.interests);
-			const finalInterestsWithNewExpCul = map(
-				i =>
-					i.name === 'History' || 'Culinary' || 'Adventure' || 'Haunted'
-						? merge(i, { experienceTypes: newExpCul })
-						: i,
-				state.interests
-			);
-			return merge(state, { interests: finalInterestsWithNewExpCul });
+			return merge(state, { interests: newExpCul });
+		// const finalInterestsWithNewExpCul = map(
+		// 	i =>
+		// 		i.name === 'History' || 'Culinary' || 'Adventure' || 'Haunted'
+		// 			? merge(i, { experienceTypes: newExpCul })
+		// 			: i,
+		// 	state.interests
+		// );
+		// return merge(state, { interests: finalInterestsWithNewExpCul });
 		case SELECTED_HISTORY:
-			const newExp = compose(
+			// console.log('inside selected_history case', action);
+			const newExpHist = compose(
 				map(
 					exp =>
 						toLower(exp.name) === toLower(action.payload)
@@ -158,15 +178,18 @@ export const stateTracker = (state = initialState, action) => {
 				find(x => x.name === 'history'),
 				map(i => merge(i, { name: toLower(i.name) }))
 			)(state.interests);
-			const finalInterestsWithNewExp = map(
-				i =>
-					i.name === 'History' || 'Culinary' || 'Adventure' || 'Haunted'
-						? merge(i, { experienceTypes: newExp })
-						: i,
-				state.interests
-			);
-			return merge(state, { interests: finalInterestsWithNewExp });
+			console.log('newExp', newExpHist);
+			return merge(state, { interests: newExpHist });
+		// const finalInterestsWithNewExp = map(
+		// 	i =>
+		// 		i.name === 'History' || 'Culinary' || 'Adventure' || 'Haunted'
+		// 			? merge(i, { experienceTypes: newExp })
+		// 			: i,
+		// 	state.interests
+		// );
+		// return merge(state, { interests: finalInterestsWithNewExp });
 		case CHECK_DAY:
+			console.log('checkDay redcuer');
 			let newDow = map(
 				day =>
 					day.name === action.payload.day
@@ -179,10 +202,12 @@ export const stateTracker = (state = initialState, action) => {
 			var resultOptions = [];
 			const chosenInterest = find(i => i.selected, action.payload.interests);
 			const resultOptions1 = concat([chosenInterest.name], resultOptions);
-			const chosenExp = find(e => e.selected, chosenInterest.experienceTypes);
+			const chosenExp = find(e => e.selected, action.payload.interests);
 			const resultOptions2 = concat([chosenExp.name], resultOptions1);
+			const resultOptions = concat([chosenExp.name], resultOptions);
 			const chosenDays = find(d => d.selected, action.payload.dow);
-			const resultOptionsFINAL = concat([chosenDays.name], resultOptions2);
+			const resultOptionsFINAL = concat([chosenDays.name], resultOptions);
+			console.log('state', resultOptionsFINAL);
 			return (state = resultOptionsFINAL);
 		case START_OVER:
 			return initialState;
